@@ -1,4 +1,4 @@
-﻿/************************************************************************
+/************************************************************************
    AvalonDock
 
    Copyright (C) 2007-2013 Xceed Software Inc.
@@ -192,6 +192,14 @@ namespace TestApp
 
 			leftAnchorGroup.Children.Add(new LayoutAnchorable() { Title = "New Anchorable" });
 
+		}
+
+
+		private void OnHideToolWindow1(object sender, RoutedEventArgs e)
+		{
+			var toolWindow1 = dockManager.Layout.Descendents().OfType<LayoutAnchorable>().Single(a => a.ContentId == "toolWindow1");
+			if (!toolWindow1.IsHidden)
+				toolWindow1.Hide();
 		}
 
 		private void OnShowToolWindow1(object sender, RoutedEventArgs e)

@@ -55,7 +55,9 @@
             <MenuItem Header="Tools">
                 <MenuItem Click="OnShowWinformsWindow" Header="WinForms Window" />
                 <MenuItem Click="OnShowToolWindow1" Header="Tool Window1" />
-                <MenuItem Click="OnNewFloatingWindow" Header="New floating window" />
+                <MenuItem Click="OnHideToolWindow1" Header="Hide Tool Window1" />
+
+<MenuItem Click="OnNewFloatingWindow" Header="New floating window" />
             </MenuItem>
         </Menu>
 
@@ -119,7 +121,7 @@
                     </LayoutDocumentPaneGroup>
                     <LayoutAnchorablePaneGroup DockWidth="50">
                         <LayoutAnchorablePane>
-                            <LayoutAnchorable
+                            <LayoutAnchorable x:Name="toolWindow"
                                 Title="Tool Window 1"
                                 ContentId="toolWindow1"
                                 Hiding="OnToolWindow1Hiding">
