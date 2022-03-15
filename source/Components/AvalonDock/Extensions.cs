@@ -1,4 +1,4 @@
-﻿/************************************************************************
+/************************************************************************
    AvalonDock
 
    Copyright (C) 2007-2013 Xceed Software Inc.
@@ -10,13 +10,30 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AvalonDock
 {
 	internal static class Extensions
 	{
+		public static int GetDisableCount(this Dispatcher target)
+		{
+			if (target == null)
+				return 0;
+			return target.GetFieldValue<int>("_disableProcessingCount");
+		}
+
+		public static T GetFieldValue<T>(this object obj, string name)
+		{
+			// Set the flags so that private and public fields from instances will be found
+			var bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+			var field = obj.GetType().GetField(name, bindingFlags);
+			return field != null ? (T)field.GetValue(obj) : default;
+		}
+
 		public static bool Contains(this IEnumerable collection, object item)
 		{
 			foreach (var o in collection)

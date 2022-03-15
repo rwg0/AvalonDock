@@ -336,7 +336,7 @@ namespace AvalonDock.Controls
 			{
 				var windowHandle = new WindowInteropHelper(this).Handle;
 				var lParam = new IntPtr(((int)Left & 0xFFFF) | ((int)Top << 16));
-				Win32Helper.SendMessage(windowHandle, Win32Helper.WM_NCLBUTTONDOWN, new IntPtr(Win32Helper.HT_CAPTION), lParam);
+				Win32Helper.PostMessage(windowHandle, Win32Helper.WM_NCLBUTTONDOWN, new IntPtr(Win32Helper.HT_CAPTION), lParam);
 			}
 		}
 
@@ -625,7 +625,17 @@ namespace AvalonDock.Controls
 			_attachDrag = false;
 			Show();
 			var lParam = new IntPtr(((int)mousePosition.X & 0xFFFF) | ((int)mousePosition.Y << 16));
-			Win32Helper.SendMessage(windowHandle, Win32Helper.WM_NCLBUTTONDOWN, new IntPtr(Win32Helper.HT_CAPTION), lParam);
+
+			// encountered situations where this code is called while the dispatcher is disabled - yuck.
+			// SendMessage may then cause process death with InvalidOperationException as the code on the end may pump messages
+			// PostMessage should avoid that, but causes the drag position of the window to be wrong if you drag away quickly.
+			// So, hack a bit by reading the dispatcher disable count and using SendMessage if we can, otherwise Post
+
+			if (Dispatcher.GetDisableCount() == 0)
+				Win32Helper.SendMessage(windowHandle, Win32Helper.WM_NCLBUTTONDOWN, new IntPtr(Win32Helper.HT_CAPTION), lParam);
+			else
+				Win32Helper.PostMessage(windowHandle, Win32Helper.WM_NCLBUTTONDOWN, new IntPtr(Win32Helper.HT_CAPTION), lParam);
+
 		}
 
 		private void UpdatePositionAndSizeOfPanes()
