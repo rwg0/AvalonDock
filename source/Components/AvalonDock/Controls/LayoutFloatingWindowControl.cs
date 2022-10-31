@@ -604,6 +604,10 @@ namespace AvalonDock.Controls
 
 			if (!_attachDrag || Mouse.LeftButton != MouseButtonState.Pressed) return;
 			var windowHandle = new WindowInteropHelper(this).Handle;
+
+			if (PresentationSource.FromVisual(this) == null)
+				return; // cannot go any further, hopefully will leave system in some sort of workable state.
+
 			var mousePosition = this.PointToScreenDPI(Mouse.GetPosition(this));
 
 			var area = this.GetScreenArea();
