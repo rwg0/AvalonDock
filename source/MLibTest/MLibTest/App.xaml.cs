@@ -1,4 +1,5 @@
-﻿namespace MLibTest
+
+namespace MLibTest
 {
 	using MLib.Interfaces;
 	using MLibTest.Models;
