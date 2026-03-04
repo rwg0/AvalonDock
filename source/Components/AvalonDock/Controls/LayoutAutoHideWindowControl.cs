@@ -143,7 +143,7 @@ namespace AvalonDock.Controls
 				// ptMouse will be in screen co-ordinates at the RAW DPI of the screen
 				var rectWindow = this.GetScreenArea(); // however rectWindow will be in 100% scaling co-ordinates (may depend on DPI awareness of the process)
 
-				var point = this.TransformFromDeviceDPI(new Point(ptMouse.X, ptMouse.Y)); // so transform the mouse point to WPF co-ordinates at the current DPI awareness of the process
+				var point = this.TransformToDeviceDPI(new Point(ptMouse.X, ptMouse.Y)); // so transform the mouse point to WPF co-ordinates at the current DPI awareness of the process
 				if (rectWindow.Contains(point))  // and then this should work properly
 					return true;
 
