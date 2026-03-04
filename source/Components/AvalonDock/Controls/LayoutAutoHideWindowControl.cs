@@ -139,15 +139,18 @@ namespace AvalonDock.Controls
 			{
 				var ptMouse = new Win32Helper.Win32Point();
 				if (!Win32Helper.GetCursorPos(ref ptMouse)) return false;
-				var location = this.PointToScreenDPI(new Point());
-				var rectWindow = this.GetScreenArea();
-				if (rectWindow.Contains(new Point(ptMouse.X, ptMouse.Y))) return true;
+
+				// ptMouse will be in screen co-ordinates at the RAW DPI of the screen
+				var rectWindow = this.GetScreenArea(); // however rectWindow will be in 100% scaling co-ordinates (may depend on DPI awareness of the process)
+
+				var point = this.TransformFromDeviceDPI(new Point(ptMouse.X, ptMouse.Y)); // so transform the mouse point to WPF co-ordinates at the current DPI awareness of the process
+				if (rectWindow.Contains(point))  // and then this should work properly
+					return true;
 
 				var manager = Model?.Root.Manager;
 				var anchor = manager?.FindVisualChildren<LayoutAnchorControl>().Where(c => c.Model == Model).FirstOrDefault();
 
 				return anchor != null && anchor.IsMouseOver;
-				//location = anchor.PointToScreenDPI(new Point());
 			}
 		}
 
