@@ -1,0 +1,2 @@
+nuget.exe push source\Components\AvalonDock\bin\Release\rwg0.AvalonDock.4.60.4.nupkg -Source https://nuget.pkg.github.com/rwg0/index.json
+nuget.exe push source\Components\AvalonDock.Themes.Aero\bin\Release\rwg0.AvalonDock.Themes.Aero.4.60.4.nupkg -Source https://nuget.pkg.github.com/rwg0/index.json
